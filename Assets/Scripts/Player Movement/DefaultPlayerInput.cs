@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,14 +6,20 @@ using UnityEngine.InputSystem; //https://docs.unity3d.com/Packages/com.unity.inp
 
 public class DefaultPlayerInput : MonoBehaviour
 {
+    public bool isMovementPressed;
+
     public Vector2 moveDir;
     public Vector2 lookDir;
+    public bool isRunning;
 
-    public bool jumpAction;
+    private void Update()
+    {
+        isMovementPressed = moveDir.x != 0 || moveDir.y != 0;
+    }
 
     private void OnMove(InputValue value) //value is defined by Unity InputSystem
     {
-        moveDir = value.Get<Vector2>();
+        moveDir = value.Get<Vector2>();  
     }
 
     private void OnLook(InputValue value)
@@ -20,8 +27,8 @@ public class DefaultPlayerInput : MonoBehaviour
         lookDir = value.Get<Vector2>();
     }
 
-    private void OnJump(InputValue value)
+    private void OnRun(InputValue value) //Issue here somewhere
     {
-        jumpAction = value.Get<bool>();
+        isRunning = value.Get<bool>() ;
     }
 }
