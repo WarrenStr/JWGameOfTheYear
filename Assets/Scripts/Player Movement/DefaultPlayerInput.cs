@@ -27,8 +27,8 @@ public class DefaultPlayerInput : MonoBehaviour
         lookDir = value.Get<Vector2>();
     }
 
-    private void OnRun(InputValue value) //Issue here somewhere
-    {
-        isRunning = value.Get<bool>() ;
-    }
+    //private void OnRun(InputValue value) //Issue here somewhere
+    //{
+    //    isRunning = value.Get<bool>() ;
+    //}
 }
