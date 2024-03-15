@@ -13,6 +13,7 @@ public class LobbyManager : Singleton<LobbyManager>
     private Coroutine _heatbeatCoroutine;
     private Coroutine _refreshLobbyCoroutine;
 
+
     internal string GetLobbyCode()
     {
         return _lobby?.LobbyCode;
@@ -40,9 +41,9 @@ public class LobbyManager : Singleton<LobbyManager>
             return false;
         }
 
-        Debug.Log(message: $"Lobby created with lobby id {_lobby.Id}");
+        //Debug.Log(message: $"Lobby created with lobby id {_lobby.Id}");
 
-        _heatbeatCoroutine = StartCoroutine(HeartbeatLobbyCoroutine(_lobby.Id, 6.0f)); //Only the host need to do the heartbeat
+        _heatbeatCoroutine = StartCoroutine(HeartbeatLobbyCoroutine(_lobby.Id, 6.0f)); //Only the host needs to do the heartbeat
         _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, 1.0f));
 
         return true;
@@ -53,7 +54,7 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         while (true) 
         {
-            Debug.Log(message: "Heartbeat");
+            //Debug.Log(message: "Heartbeat");
             LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
             yield return new WaitForSecondsRealtime(waitTimeSeconds);
         }
@@ -64,13 +65,15 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         while (true)
         {
-            Debug.Log(message: "Lobby Refresh");
+            //Debug.Log(message: "Lobby Refresh");
             Task<Lobby> task = LobbyService.Instance.GetLobbyAsync(lobbyId);
             yield return new WaitUntil(() => task.IsCompleted);
             Lobby newLobby = task.Result;
+
             if (newLobby.LastUpdated > _lobby.LastUpdated)
             {
                 _lobby = newLobby;  
+                LobbyEvents.OnLobbyUpdated?.Invoke(_lobby);
             }
 
             yield return new WaitForSecondsRealtime(waitTimeSeconds);
@@ -122,5 +125,18 @@ public class LobbyManager : Singleton<LobbyManager>
 
         _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, 1.0f));
         return true;
+    }
+
+
+    public List<Dictionary<string, PlayerDataObject>> GetPlayersData()
+    {
+        List<Dictionary<string, PlayerDataObject>> data = new List<Dictionary<string, PlayerDataObject>>();
+
+        foreach (Player player in _lobby.Players)
+        {
+            data.Add(player.Data);
+        }
+
+        return data;
     }
 }
