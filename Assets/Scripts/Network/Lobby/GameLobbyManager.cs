@@ -12,6 +12,7 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
 
     private LobbyPlayerData _localLobbyPlayerData;
 
+
     private void OnEnable()
     {
         LobbyEvents.OnLobbyUpdated += OnLobbyUpdated;
@@ -64,18 +65,27 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
             if (lobbyPlayerData.Id == AuthenticationService.Instance.PlayerId) //Local User
             {
                 _localLobbyPlayerData = lobbyPlayerData;
+                //Debug.Log("Local User Found " + lobbyPlayerData.GamerTag + "  IsReady:" + lobbyPlayerData.IsReady);
             }
 
             _lobbyPlayerDatas.Add(lobbyPlayerData);
+
         }
 
         LobbyEvents1.OnLobbyUpdated?.Invoke();
-
     }
 
 
     public List<LobbyPlayerData> GetPlayers()
     {
         return _lobbyPlayerDatas;
+    }
+
+
+    public async Task<bool> SetPlayerReady()
+    {
+        _localLobbyPlayerData.IsReady = true;
+
+        return await LobbyManager.Instance.UpdatePlayerData(_localLobbyPlayerData.Id, _localLobbyPlayerData.Serialize());
     }
 }

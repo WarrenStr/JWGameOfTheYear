@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Player 1
+  m_text: Host
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -145,6 +145,7 @@ GameObject:
   - component: {fileID: 5468255779587138346}
   - component: {fileID: 7228219265934446626}
   - component: {fileID: 8805943523470696293}
+  - component: {fileID: 5483849306068434020}
   m_Layer: 0
   m_Name: Player UI Icon
   m_TagString: Untagged
@@ -211,6 +212,20 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &5483849306068434020
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6795138181844603943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c11b82cabf625dc43ba1826b02b29405, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _playerName: {fileID: 8609746091815901086}
+  _isReadyIcon: {fileID: 6068542063973761968}
 --- !u!1 &8262741422775411052
 GameObject:
   m_ObjectHideFlags: 0

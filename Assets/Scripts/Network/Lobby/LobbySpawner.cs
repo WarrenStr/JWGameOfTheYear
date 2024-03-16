@@ -12,10 +12,12 @@ public class LobbySpawner : MonoBehaviour
         LobbyEvents1.OnLobbyUpdated += OnLobbyUpdated;
     }
 
+
     private void OnDisable()
     {
         LobbyEvents1.OnLobbyUpdated -= OnLobbyUpdated;
     }
+
 
     private void OnLobbyUpdated()
     {

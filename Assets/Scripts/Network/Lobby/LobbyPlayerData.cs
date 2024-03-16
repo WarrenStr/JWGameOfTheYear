@@ -14,11 +14,11 @@ public class LobbyPlayerData
     public string GamerTag => _gamerTag;
     
 
-    public bool IsReady { get; set; } //Auto Implemented Property
-    //{
-    //    get => _isReady;
-    //    set => _isReady = value;
-    //}
+    public bool IsReady
+    {
+        get => _isReady;
+        set => _isReady = value;
+    }
 
 
     public void Initialize(string id, string gamertag) //Initialize Host

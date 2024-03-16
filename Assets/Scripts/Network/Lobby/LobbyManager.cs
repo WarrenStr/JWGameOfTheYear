@@ -139,4 +139,28 @@ public class LobbyManager : Singleton<LobbyManager>
 
         return data;
     }
+
+
+    public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string, string> data)
+    {
+        Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
+        
+        UpdatePlayerOptions options = new UpdatePlayerOptions()
+        {
+            Data = playerData
+        };
+
+        try
+        {
+           _lobby = await LobbyService.Instance.UpdatePlayerAsync(_lobby.Id, playerId, options);
+        }
+        catch (System.Exception)
+        {
+            return false; 
+        }
+
+        LobbyEvents.OnLobbyUpdated(_lobby);
+
+        return true;
+    }
 }
