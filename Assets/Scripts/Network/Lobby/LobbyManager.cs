@@ -20,7 +20,7 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
-    public async Task<bool> CreateLobby(int maxPlayers, bool isPrivate, Dictionary<string, string> data)
+    public async Task<bool> CreateLobby(int maxPlayers, bool isPrivate, Dictionary<string, string> data, Dictionary<string, string> lobbyData)
     {
         Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
 
@@ -28,6 +28,7 @@ public class LobbyManager : Singleton<LobbyManager>
 
         CreateLobbyOptions options = new CreateLobbyOptions()
         {
+            Data = SerializeLobbyData(lobbyData),
             IsPrivate = isPrivate,
             Player = player
         };
@@ -93,6 +94,20 @@ public class LobbyManager : Singleton<LobbyManager>
                 value: value));
         }
         return playerData;
+    }
+
+
+    private Dictionary<string, DataObject> SerializeLobbyData(Dictionary<string, string> data)
+    {
+        Dictionary<string, DataObject> lobbyData = new Dictionary<string, DataObject>();
+        foreach (var(key, value) in data)
+        {
+            lobbyData.Add(key, new DataObject(
+                    visibility: DataObject.VisibilityOptions.Member,
+                    value: value));
+        }
+
+        return lobbyData;
     }
 
 
@@ -162,5 +177,34 @@ public class LobbyManager : Singleton<LobbyManager>
         LobbyEvents.OnLobbyUpdated(_lobby);
 
         return true;
+    }
+
+
+    public async Task<bool> UpdateLobbyData(Dictionary<string, string> data)
+    {
+        Dictionary<string, DataObject>  lobbyData = SerializeLobbyData(data);
+
+        UpdateLobbyOptions options = new UpdateLobbyOptions()
+        { 
+            Data = lobbyData 
+        };
+
+        try
+        {
+            _lobby = await LobbyService.Instance.UpdateLobbyAsync(_lobby.Id, options);
+        }
+        catch (System.Exception)
+        {
+            return false;
+        }
+
+        LobbyEvents.OnLobbyUpdated(_lobby);
+
+        return true;
+    }
+
+    public string GetHostId()
+    {
+        return _lobby.HostId;
     }
 }

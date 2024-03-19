@@ -9,6 +9,7 @@ public class LobbyUI : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _lobbyUI;
     [SerializeField] private Button _readyButton;
+    [SerializeField] private Button _startButton;
     [SerializeField] private Image _mapImage;
     [SerializeField] private Button _leftButton;
     [SerializeField] private Button _rightButton;
@@ -21,24 +22,44 @@ public class LobbyUI : MonoBehaviour
     private void OnEnable()
     {
         _readyButton.onClick.AddListener(OnReadyPressed);
-        _leftButton.onClick.AddListener(OnLeftButtonClick);
-        _rightButton.onClick.AddListener(OnRightButtonClick);
+
+        if (GameLobbyManager.Instance.IsHost)
+        {
+            _readyButton.onClick.AddListener(OnReadyPressed);
+            _leftButton.onClick.AddListener(OnLeftButtonClick);
+            _rightButton.onClick.AddListener(OnRightButtonClick);
+
+            LobbyEvents1.OnLobbyReady += OnLobbyReady;
+        }
+
+        LobbyEvents1.OnLobbyUpdated += OnLobbyUpdated;
     }
+
 
     private void OnDisable()
     {
         _readyButton.onClick.RemoveAllListeners();
         _leftButton.onClick.RemoveAllListeners();
         _rightButton.onClick.RemoveAllListeners();
+
+        LobbyEvents1.OnLobbyUpdated -= OnLobbyUpdated;
+        LobbyEvents1.OnLobbyReady -= OnLobbyReady;
     }
 
     void Start()
     {
         _lobbyUI.text = $"Lobby Code: {GameLobbyManager.Instance.GetLobbyCode()}";
+
+        if(!GameLobbyManager.Instance.IsHost)
+        {
+            _leftButton.gameObject.SetActive(false);
+            _rightButton.gameObject.SetActive(false);
+
+        }
     }
 
     
-    private void OnLeftButtonClick()
+    private async void OnLeftButtonClick()
     {
         if (_currentMapIndex - 1 >= 0) 
         {
@@ -50,10 +71,11 @@ public class LobbyUI : MonoBehaviour
         }
 
         UpdateMap();
+        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex);
     }
 
 
-    private void OnRightButtonClick()
+    private async void OnRightButtonClick()
     {
         if (_currentMapIndex + 1 <= _mapSelectionData.Maps.Count - 1)
         {
@@ -65,6 +87,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         UpdateMap();
+        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex);
     }
 
 
@@ -78,9 +101,21 @@ public class LobbyUI : MonoBehaviour
         }
     }
 
+
     private void UpdateMap()
     {
         _mapImage.sprite = _mapSelectionData.Maps[_currentMapIndex].MapThumbnail;
         _mapName.text = _mapSelectionData.Maps[_currentMapIndex].MapName;
+    }
+
+    private void OnLobbyUpdated()
+    {
+        _currentMapIndex = GameLobbyManager.Instance.GetMapIndex();
+        UpdateMap();
+    }
+
+    private void OnLobbyReady()
+    {
+        _startButton.gameObject.SetActive(true);
     }
 }
