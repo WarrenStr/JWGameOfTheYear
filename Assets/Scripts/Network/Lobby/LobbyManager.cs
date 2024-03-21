@@ -156,13 +156,14 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
-    public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string, string> data)
+    public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string, string> data, string allocatioId = default, string connectionData = default)
     {
         Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
-        
         UpdatePlayerOptions options = new UpdatePlayerOptions()
         {
-            Data = playerData
+            Data = playerData,
+            AllocationId = allocatioId,
+            ConnectionInfo = connectionData
         };
 
         try
@@ -202,6 +203,7 @@ public class LobbyManager : Singleton<LobbyManager>
 
         return true;
     }
+
 
     public string GetHostId()
     {

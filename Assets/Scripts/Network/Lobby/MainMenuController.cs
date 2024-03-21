@@ -12,7 +12,6 @@ public class MainMenuController : MonoBehaviour
 
     [SerializeField] private Button _hostButton;
     [SerializeField] private Button _joinButton;
-
     [SerializeField] private Button _submitCodeButton;
 
     [SerializeField] private TextMeshProUGUI _codeText;

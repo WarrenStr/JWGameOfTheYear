@@ -4,14 +4,15 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Unity.Services.Authentication;
 using Unity.Services.Lobbies.Models;
-//using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameLobbyManager : Singleton<GameLobbyManager>
 {
     private List<LobbyPlayerData> _lobbyPlayerDatas = new List<LobbyPlayerData>();
     private LobbyPlayerData _localLobbyPlayerData;
     private LobbyData _lobbyData;
+    private int _maxNumberOfPlayers = 4;
 
     public bool IsHost => _localLobbyPlayerData.Id == LobbyManager.Instance.GetHostId();
 
@@ -36,7 +37,7 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         _lobbyData = new LobbyData();
         _lobbyData.Initialize(mapIndex: 0);
 
-        bool succeeded = await LobbyManager.Instance.CreateLobby(maxPlayers: 4, isPrivate: true,data: _localLobbyPlayerData.Serialize(), _lobbyData.Serialize());
+        bool succeeded = await LobbyManager.Instance.CreateLobby(_maxNumberOfPlayers, isPrivate: true,data: _localLobbyPlayerData.Serialize(), _lobbyData.Serialize());
         return succeeded;
     }
 
@@ -115,9 +116,25 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return _lobbyData.MapIndex;
     }
 
+
     public async Task<bool> SetSelectedMap(int currentMapIndex)
     {
         _lobbyData.MapIndex = currentMapIndex;
         return await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize()); 
+    }
+
+
+    public async Task StartGame(string sceneName)
+    {
+        string joinRelayCode = await RelayManager.Instance.CreateRelay(_maxNumberOfPlayers);
+
+        _lobbyData.SetRelayJoinCode(joinRelayCode);
+        await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize());
+
+        string allocationId = RelayManager.Instance.GetAllocationId();
+        string connectionData = RelayManager.Instance.GetConnectionData();
+        await LobbyManager.Instance.UpdatePlayerData(_localLobbyPlayerData.Id, _localLobbyPlayerData.Serialize(), allocationId, connectionData);
+
+        SceneManager.LoadSceneAsync(sceneName);
     }
 }

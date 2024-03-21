@@ -28,6 +28,7 @@ public class LobbyUI : MonoBehaviour
             _readyButton.onClick.AddListener(OnReadyPressed);
             _leftButton.onClick.AddListener(OnLeftButtonClick);
             _rightButton.onClick.AddListener(OnRightButtonClick);
+            _startButton.onClick.AddListener(OnStartButtonClicked);
 
             LobbyEvents1.OnLobbyReady += OnLobbyReady;
         }
@@ -41,6 +42,7 @@ public class LobbyUI : MonoBehaviour
         _readyButton.onClick.RemoveAllListeners();
         _leftButton.onClick.RemoveAllListeners();
         _rightButton.onClick.RemoveAllListeners();
+        _startButton.onClick.RemoveAllListeners();
 
         LobbyEvents1.OnLobbyUpdated -= OnLobbyUpdated;
         LobbyEvents1.OnLobbyReady -= OnLobbyReady;
@@ -114,8 +116,15 @@ public class LobbyUI : MonoBehaviour
         UpdateMap();
     }
 
+
     private void OnLobbyReady()
     {
         _startButton.gameObject.SetActive(true);
+    }
+
+
+    private async void OnStartButtonClicked()
+    {
+        await GameLobbyManager.Instance.StartGame(_mapSelectionData.Maps[_currentMapIndex].SceneName);
     }
 }
