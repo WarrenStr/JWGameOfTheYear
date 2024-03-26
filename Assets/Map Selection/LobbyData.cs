@@ -8,11 +8,24 @@ public class LobbyData
 {
     private int _mapIndex;
     private string _relayJoinCode;
+    private string _sceneName;
 
     public int MapIndex
     {
         get => _mapIndex;
         set => _mapIndex = value;
+    }
+
+    public string RelayJoinCode
+    {
+        get => _relayJoinCode;
+        set => _relayJoinCode = value;
+    }
+
+    public string SceneName
+    {
+        get => _sceneName;
+        set => _sceneName = value;
     }
 
     public void Initialize(int mapIndex)
@@ -36,6 +49,11 @@ public class LobbyData
         {
             _relayJoinCode = lobbyData["RelayJoinCode"].Value;
         }
+
+        if(lobbyData.ContainsKey("SceneName"))
+        {
+            _sceneName = lobbyData["SceneName"].Value;   
+        }
     }
 
     public Dictionary<string, string> Serialize()
@@ -43,12 +61,8 @@ public class LobbyData
         return new Dictionary<string, string>()
         {
             {"MapIndex", _mapIndex.ToString()},
-            {"RelayJoinCode", _relayJoinCode}
+            {"RelayJoinCode", _relayJoinCode},
+            {"SceneName", _sceneName}
         };
-    }
-
-    public void SetRelayJoinCode(string code)
-    {
-        _relayJoinCode = code;
     }
 }

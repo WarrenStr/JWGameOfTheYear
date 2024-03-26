@@ -73,7 +73,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         UpdateMap();
-        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex);
+        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
     }
 
 
@@ -89,7 +89,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         UpdateMap();
-        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex);
+        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
     }
 
 
@@ -125,6 +125,6 @@ public class LobbyUI : MonoBehaviour
 
     private async void OnStartButtonClicked()
     {
-        await GameLobbyManager.Instance.StartGame(_mapSelectionData.Maps[_currentMapIndex].SceneName);
+        await GameLobbyManager.Instance.StartGame();
     }
 }
