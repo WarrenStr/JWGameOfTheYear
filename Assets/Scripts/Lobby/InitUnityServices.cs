@@ -1,21 +1,16 @@
-/* 
- * Note that the SignInAnonymouslyAsync method 
- * 
- * Player Prefs https://docs.unity3d.com/ScriptReference/PlayerPrefs.html
- * Async https://gamedevbeginner.com/async-in-unity/
- * AuthenticationServices https://docs.unity.com/ugs/en-us/manual/authentication/manual/get-started
- * 
- */
+// Player Prefs https://docs.unity3d.com/ScriptReference/PlayerPrefs.html
+// Async https://gamedevbeginner.com/async-in-unity/
+// AuthenticationServices https://docs.unity.com/ugs/en-us/manual/authentication/manual/get-started
 
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Services.Authentication;
 using Unity.Services.Core;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class Init : MonoBehaviour
+/// <summary>
+/// The InitUnityServices class initializes Unity services and handles anonymous user authentication. Upon successful sign-in, it loads the Main Menu scene.
+/// </summary>
+public class InitUnityServices : MonoBehaviour
 {
     async void Start()
     {
@@ -43,8 +38,8 @@ public class Init : MonoBehaviour
 
     private void OnSignedIn()
     {
-        //Debug.Log(message: $"Player Id: {AuthenticationService.Instance.PlayerId}");
-        //Debug.Log(message: $"Token: {AuthenticationService.Instance.AccessToken}");
+        Debug.Log(message: $"Player Id: {AuthenticationService.Instance.PlayerId}");
+        Debug.Log(message: $"Token: {AuthenticationService.Instance.AccessToken}");
     }
 
     private void OnDisable()
