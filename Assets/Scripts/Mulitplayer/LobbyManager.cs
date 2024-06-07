@@ -1,3 +1,5 @@
+// Create a lobby https://docs.unity.com/ugs/en-us/manual/lobby/manual/create-a-lobby
+
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -24,7 +26,7 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
 
-        Player player = new Player(AuthenticationService.Instance.PlayerId, connectionInfo: null, playerData);
+        Player player = new (AuthenticationService.Instance.PlayerId, connectionInfo: null, playerData);
 
         CreateLobbyOptions options = new CreateLobbyOptions()
         {
@@ -42,31 +44,31 @@ public class LobbyManager : Singleton<LobbyManager>
             return false;
         }
 
-        //Debug.Log(message: $"Lobby created with lobby id {_lobby.Id}");
+        Debug.Log(message: $"Lobby created with lobby id {_lobby.Id}");
 
-        _heatbeatCoroutine = StartCoroutine(HeartbeatLobbyCoroutine(_lobby.Id, 6.0f)); //Only the host needs to do the heartbeat
+        _heatbeatCoroutine = StartCoroutine(HeartbeatLobbyCoroutine(_lobby.Id, 6.0f)); // Only the host needs to do the heartbeat.
         _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, 1.0f));
 
         return true;
     }
 
 
-    private IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds) //Heartbeat
+    private IEnumerator HeartbeatLobbyCoroutine(string lobbyId, float waitTimeSeconds) // Heartbeat.
     {
         while (true) 
         {
-            //Debug.Log(message: "Heartbeat");
+            Debug.Log(message: "Heartbeat");
             LobbyService.Instance.SendHeartbeatPingAsync(lobbyId);
             yield return new WaitForSecondsRealtime(waitTimeSeconds);
         }
     }
 
 
-    private IEnumerator RefreshLobbyCoroutine(string lobbyId, float waitTimeSeconds) //Refresh
+    private IEnumerator RefreshLobbyCoroutine(string lobbyId, float waitTimeSeconds) // Refresh.
     {
         while (true)
         {
-            //Debug.Log(message: "Lobby Refresh");
+            Debug.Log(message: "Lobby Refresh");
             Task<Lobby> task = LobbyService.Instance.GetLobbyAsync(lobbyId);
             yield return new WaitUntil(() => task.IsCompleted);
             Lobby newLobby = task.Result;
@@ -86,7 +88,7 @@ public class LobbyManager : Singleton<LobbyManager>
     {
         Dictionary<string, PlayerDataObject> playerData = new Dictionary<string, PlayerDataObject>();
 
-        foreach (var (key, value) in data)  //Dictionar<string,string>
+        foreach (var (key, value) in data)  //Dictionary<string,string>
         {
 
             playerData.Add(key, new PlayerDataObject(
@@ -113,7 +115,7 @@ public class LobbyManager : Singleton<LobbyManager>
 
     public void OnApplicationQuit()
     {
-        if (_lobby != null && _lobby.HostId == AuthenticationService.Instance.PlayerId) //If we are the host
+        if (_lobby != null && _lobby.HostId == AuthenticationService.Instance.PlayerId) // If we are the host.
         {
             LobbyService.Instance.DeleteLobbyAsync(_lobby.Id);
         }
@@ -127,7 +129,6 @@ public class LobbyManager : Singleton<LobbyManager>
 
         options.Player = player;
 
-
         try 
         {
             _lobby = await LobbyService.Instance.JoinLobbyByCodeAsync(code, options);
@@ -136,7 +137,6 @@ public class LobbyManager : Singleton<LobbyManager>
         {
             return false;
         }
-
 
         _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, 1.0f));
         return true;

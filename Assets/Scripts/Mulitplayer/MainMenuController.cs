@@ -1,10 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
+/// <summary>
+/// The MainMenuController class manages the user interface for the main menu of the game like hosting a new game, joining an existing game, and submitting a join code. 
+/// This class also manages the transition between the main screen and the join screen within the main menu.
+/// </summary>
 public class MainMenuController : MonoBehaviour
 {
     [SerializeField] private GameObject _mainScreen;
@@ -27,8 +29,9 @@ public class MainMenuController : MonoBehaviour
 
     private async void OnHostClicked()
     {
-        //Debug.Log(message: "Host");
+        Debug.Log(message: "Host");
         bool succeedded = await GameLobbyManager.Instance.CreateLobby();
+
         if (succeedded) 
         {
             SceneManager.LoadSceneAsync("Lobby");
@@ -38,7 +41,7 @@ public class MainMenuController : MonoBehaviour
 
     private void OnJoinClicked()
     {
-        //Debug.Log(message: "Join");
+         Debug.Log(message: "Join");
         _mainScreen.SetActive(false);
         _joinScreen.SetActive(true);
     }
@@ -48,7 +51,7 @@ public class MainMenuController : MonoBehaviour
     {
         string code = _codeText.text;
         code = code.Substring(0, code.Length - 1); //TextMeshPro adds a end of line character to the end of string that we need to remove
-        //Debug.Log(code);
+        Debug.Log(code);
 
         bool succeeded = await GameLobbyManager.Instance.JoinLobby(code);
         

@@ -7,6 +7,10 @@ using Unity.Services.Lobbies.Models;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// The GameLobbyManager class is a singleton that manages the game's lobby system, including creating, joining, and updating lobbies. It handles player data and synchronization across the lobby, manages the state of the game
+/// lobby, and transitions between game scenes. This class relies on the Unity Services SDK for Lobby and Relay management
+/// </summary>
 public class GameLobbyManager : Singleton<GameLobbyManager>
 {
     private List<LobbyPlayerData> _lobbyPlayerDatas = new List<LobbyPlayerData>();
@@ -28,7 +32,10 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public async Task<bool> CreateLobby()
     {
         _localLobbyPlayerData = new LobbyPlayerData();
@@ -41,13 +48,20 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return succeeded;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public String GetLobbyCode()
     {
         return LobbyManager.Instance.GetLobbyCode();
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="code"></param>
+    /// <returns></returns>
     public async Task<bool> JoinLobby(string code)
     {
         _localLobbyPlayerData = new LobbyPlayerData();
@@ -102,13 +116,19 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         }
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public List<LobbyPlayerData> GetPlayers()
     {
         return _lobbyPlayerDatas;
     }
 
-
+/// <summary>
+/// 
+/// </summary>
+/// <returns></returns>
     public async Task<bool> SetPlayerReady()
     {
         _localLobbyPlayerData.IsReady = true;
@@ -116,13 +136,21 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return await LobbyManager.Instance.UpdatePlayerData(_localLobbyPlayerData.Id, _localLobbyPlayerData.Serialize());
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public int GetMapIndex()
     {
         return _lobbyData.MapIndex;
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="currentMapIndex"></param>
+    /// <param name="sceneName"></param>
+    /// <returns></returns>
     public async Task<bool> SetSelectedMap(int currentMapIndex, string sceneName)
     {
         _lobbyData.MapIndex = currentMapIndex;
@@ -130,7 +158,10 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize()); 
     }
 
-
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <returns></returns>
     public async Task StartGame()
     {
         string relayJoinCode = await RelayManager.Instance.CreateRelay(_maxNumberOfPlayers);

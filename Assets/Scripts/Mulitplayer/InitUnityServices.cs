@@ -14,17 +14,18 @@ public class InitUnityServices : MonoBehaviour
 {
     async void Start()
     {
-        await UnityServices.InitializeAsync();
+        await UnityServices.InitializeAsync(); // Initialize SDK.
 
-        if(UnityServices.State == ServicesInitializationState.Initialized)
+        if (UnityServices.State == ServicesInitializationState.Initialized)
         {
-            AuthenticationService.Instance.SignedIn += OnSignedIn; //Events 
+            AuthenticationService.Instance.SignedIn += OnSignedIn; // TO-DO Add authentication success messages in a better spot.
 
-            await AuthenticationService.Instance.SignInAnonymouslyAsync();
+            await AuthenticationService.Instance.SignInAnonymouslyAsync(); // Logged in.
 
-            if(AuthenticationService.Instance.IsSignedIn)
+            if (AuthenticationService.Instance.IsSignedIn)
             {
                 string username = PlayerPrefs.GetString(key: "Username"); 
+               
                 if (username == "")
                 {
                     username = "Player";
@@ -33,8 +34,13 @@ public class InitUnityServices : MonoBehaviour
 
                 SceneManager.LoadSceneAsync("Main Menu");
             }
+            else
+            {
+                Debug.Log("Unity SDK not intialized");
+            }
         }
     }
+
 
     private void OnSignedIn()
     {
@@ -42,6 +48,7 @@ public class InitUnityServices : MonoBehaviour
         Debug.Log(message: $"Token: {AuthenticationService.Instance.AccessToken}");
     }
 
+    
     private void OnDisable()
     {
         AuthenticationService.Instance.SignedIn -= OnSignedIn;
