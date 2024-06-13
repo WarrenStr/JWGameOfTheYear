@@ -2309,7 +2309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ef80c8421a3e64e439ca0c114ec6a593, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lobbyUI: {fileID: 13998991}
+  _lobbyCodeText: {fileID: 13998991}
   _readyButton: {fileID: 27980785}
   _startButton: {fileID: 260636981}
   _mapImage: {fileID: 482189359}
@@ -2317,6 +2317,7 @@ MonoBehaviour:
   _rightButton: {fileID: 1110586813}
   _mapName: {fileID: 506574202}
   _mapSelectionData: {fileID: 11400000, guid: 80a2f8918ed6a264eb0221ebde110b9b, type: 2}
+  _currentMapIndex: 0
 --- !u!114 &2061262718
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,8 +17,9 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
     private LobbyPlayerData _localLobbyPlayerData;
     private LobbyData _lobbyData;
     private int _maxNumberOfPlayers = 4;
+    private bool _inGame = false;
 
-    public bool IsHost => _localLobbyPlayerData.Id == LobbyManager.Instance.GetHostId();
+    public bool IsHost => _localLobbyPlayerData.Id == LobbyManager.Instance.GetHostId(); // If the local player is the host
 
 
     private void OnEnable()
@@ -32,10 +33,11 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         LobbyEvents.OnLobbyUpdated -= OnLobbyUpdated;
     }
 
+
     /// <summary>
-    /// 
+    /// Asynchronously creates a new lobby and initializes local player data as the host.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A task that returns true if the lobby was created successfully, otherwise false.</returns>
     public async Task<bool> CreateLobby()
     {
         _localLobbyPlayerData = new LobbyPlayerData();
@@ -48,10 +50,11 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return succeeded;
     }
 
+
     /// <summary>
-    /// 
+    /// Retrieves the code for the current lobby.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The lobby code as a string.</returns>
     public String GetLobbyCode()
     {
         return LobbyManager.Instance.GetLobbyCode();
@@ -76,7 +79,7 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
     {
         List<Dictionary<string, PlayerDataObject>> playerData = LobbyManager.Instance.GetPlayersData();
 
-        _lobbyPlayerDatas.Clear();
+        _lobbyPlayerDatas.Clear(); //Clear the previous data. 
 
 
         int numberOfPlayersReady = 0;
@@ -90,17 +93,16 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
                 numberOfPlayersReady++;
             }
 
-            if (lobbyPlayerData.Id == AuthenticationService.Instance.PlayerId) //Local User
+            if (lobbyPlayerData.Id == AuthenticationService.Instance.PlayerId) //Local user.
             {
                 _localLobbyPlayerData = lobbyPlayerData;
             }
 
             _lobbyPlayerDatas.Add(lobbyPlayerData);
-
         }
 
         _lobbyData = new LobbyData();
-        _lobbyData.Initialize(lobby.Data);
+        _lobbyData.Initialize(lobby.Data); // TO-DO The intial map scene and index should be set somewhere around here. Debugs show the index starts at 0 but the scene name is null
 
         LobbyEvents1.OnLobbyUpdated?.Invoke();
 
@@ -109,26 +111,28 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
             LobbyEvents1.OnLobbyReady?.Invoke();
         }
 
-        if (_lobbyData.RelayJoinCode != default) 
+        if (_lobbyData.RelayJoinCode != default && !_inGame) 
         {
             await JoinRelayServer(_lobbyData.RelayJoinCode);
             SceneManager.LoadSceneAsync(_lobbyData.SceneName);
         }
     }
 
+
     /// <summary>
-    /// 
+    /// Retrieves the list of players in the lobby.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>A list of LobbyPlayerData objects representing the players in the lobby.</returns>
     public List<LobbyPlayerData> GetPlayers()
     {
         return _lobbyPlayerDatas;
     }
 
-/// <summary>
-/// 
-/// </summary>
-/// <returns></returns>
+
+    /// <summary>
+    /// Sets the local player as ready and updates the lobby data.
+    /// </summary>
+    /// <returns>A task that returns true if the player data was successfully updated, otherwise false.</returns>
     public async Task<bool> SetPlayerReady()
     {
         _localLobbyPlayerData.IsReady = true;
@@ -136,37 +140,42 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         return await LobbyManager.Instance.UpdatePlayerData(_localLobbyPlayerData.Id, _localLobbyPlayerData.Serialize());
     }
 
+
     /// <summary>
-    /// 
+    /// Retrieves the index of the currently selected map.
     /// </summary>
-    /// <returns></returns>
+    /// <returns>The index of the currently selected map.</returns>
     public int GetMapIndex()
     {
         return _lobbyData.MapIndex;
     }
 
+
     /// <summary>
-    /// 
+    /// Sets the selected map for the lobby and updates the lobby data.
     /// </summary>
-    /// <param name="currentMapIndex"></param>
-    /// <param name="sceneName"></param>
-    /// <returns></returns>
+    /// <param name="currentMapIndex">The index of the selected map.</param>
+    /// <param name="sceneName">The name of the scene associated with the selected map.</param>
+    /// <returns>A task that returns true if the lobby data was successfully updated, otherwise false.</returns>
     public async Task<bool> SetSelectedMap(int currentMapIndex, string sceneName)
     {
         _lobbyData.MapIndex = currentMapIndex;
         _lobbyData.SceneName = sceneName;
-        return await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize()); 
+
+        return await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize());   
     }
 
+
     /// <summary>
-    /// 
+    /// Starts the game by creating a relay, updating the lobby data, and loading the game scene.
     /// </summary>
-    /// <returns></returns>
     public async Task StartGame()
     {
         string relayJoinCode = await RelayManager.Instance.CreateRelay(_maxNumberOfPlayers);
+        _inGame = true;
 
         _lobbyData.RelayJoinCode = relayJoinCode;
+
         await LobbyManager.Instance.UpdateLobbyData(_lobbyData.Serialize());
 
         string allocationId = RelayManager.Instance.GetAllocationId();
@@ -176,8 +185,10 @@ public class GameLobbyManager : Singleton<GameLobbyManager>
         SceneManager.LoadSceneAsync(_lobbyData.SceneName);
     }
 
+
     private async Task<bool> JoinRelayServer(string relayJoinCode)
     {
+        _inGame = true;
         await RelayManager.Instance.JoinRelay(relayJoinCode);
         string allocationId = RelayManager.Instance.GetAllocationId();
         string connectionData = RelayManager.Instance.GetConnectionData();

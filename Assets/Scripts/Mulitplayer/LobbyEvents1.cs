@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class LobbyEvents1 : MonoBehaviour
 {
-    public delegate void LobbyUpdated(); //We want game to fetch game lobby info 
+    public delegate void LobbyUpdated(); // We want game to fetch game lobby info?
     public static LobbyUpdated OnLobbyUpdated;
 
     public delegate void LobbyReady();

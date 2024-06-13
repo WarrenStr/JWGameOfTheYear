@@ -9,6 +9,10 @@ using Unity.Services.Lobbies.Models;
 using Unity.Services.Authentication;
 using System;
 
+/// <summary>
+/// The LobbyManager class is a singleton that handles the creation, joining, and management of game lobbies using Unity's Lobby service.
+/// It manages the lobby state, player data, and ensures synchronization across players in the lobby.
+/// </summary>
 public class LobbyManager : Singleton<LobbyManager>
 {
     private Lobby _lobby;
@@ -21,6 +25,15 @@ public class LobbyManager : Singleton<LobbyManager>
         return _lobby?.LobbyCode;
     }
 
+
+    /// <summary>
+    /// Creates a new lobby with the specified parameters.
+    /// </summary>
+    /// <param name="maxPlayers">The maximum number of players allowed in the lobby.</param>
+    /// <param name="isPrivate">Indicates whether the lobby is private.</param>
+    /// <param name="data">Player data to be serialized and included in the lobby creation.</param>
+    /// <param name="lobbyData">Lobby data to be serialized and included in the lobby creation.</param>
+    /// <returns>A task that returns true if the lobby was created successfully, otherwise false.</returns>
 
     public async Task<bool> CreateLobby(int maxPlayers, bool isPrivate, Dictionary<string, string> data, Dictionary<string, string> lobbyData)
     {
@@ -113,6 +126,9 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
+    /// <summary>
+    /// Cleans up resources when the application quits. If the current player is the host, it deletes the lobby.
+    /// </summary>
     public void OnApplicationQuit()
     {
         if (_lobby != null && _lobby.HostId == AuthenticationService.Instance.PlayerId) // If we are the host.
@@ -122,6 +138,12 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
+    /// <summary>
+    /// Joins an existing lobby using the provided  lobby code and player data.
+    /// </summary>
+    /// <param name="code">The code of the lobby to join.</param>
+    /// <param name="playerData">Player data to be serialized and included in the join request.</param>
+    /// <returns>A task that returns true if the lobby was joined successfully, otherwise false.</returns>
     public async Task<bool> JoinLobby(string code, Dictionary<string, string> playerData)
     {
         JoinLobbyByCodeOptions options = new JoinLobbyByCodeOptions();
@@ -138,11 +160,15 @@ public class LobbyManager : Singleton<LobbyManager>
             return false;
         }
 
-        _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, 1.0f));
+        _refreshLobbyCoroutine = StartCoroutine(RefreshLobbyCoroutine(_lobby.Id, waitTimeSeconds: 1.0f));
         return true;
     }
 
 
+    /// <summary>
+    /// Retrieves the data for all players in the lobby.
+    /// </summary>
+    /// <returns>A list of dictionaries containing player data objects for each player in the lobby.</returns>
     public List<Dictionary<string, PlayerDataObject>> GetPlayersData()
     {
         List<Dictionary<string, PlayerDataObject>> data = new List<Dictionary<string, PlayerDataObject>>();
@@ -156,7 +182,15 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
-    public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string, string> data, string allocatioId = default, string connectionData = default)
+    /// <summary>
+    /// Updates the data for a specific player in the lobby.
+    /// </summary>
+    /// <param name="playerId">The ID of the player to update.</param>
+    /// <param name="data">The new data for the player.</param>
+    /// <param name="allocatioId">The allocation ID for relay connections (optional).</param>
+    /// <param name="connectionData">The connection data for relay connections (optional).</param>
+    /// <returns>A task that returns true if the player data was updated successfully, otherwise false.</returns>
+    public async Task<bool> UpdatePlayerData(string playerId, Dictionary<string, string> data, string allocatioId = default, string connectionData = default) // Default makes parameter optional. 
     {
         Dictionary<string, PlayerDataObject> playerData = SerializePlayerData(data);
         UpdatePlayerOptions options = new UpdatePlayerOptions()
@@ -181,6 +215,11 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
+    /// <summary>
+    /// Updates the data for the lobby.
+    /// </summary>
+    /// <param name="data">The new data for the lobby.</param>
+    /// <returns>A task that returns true if the lobby data was updated successfully, otherwise false.</returns>
     public async Task<bool> UpdateLobbyData(Dictionary<string, string> data)
     {
         Dictionary<string, DataObject>  lobbyData = SerializeLobbyData(data);
@@ -205,6 +244,10 @@ public class LobbyManager : Singleton<LobbyManager>
     }
 
 
+    /// <summary>
+    /// Retrieves the ID of the host of the lobby.
+    /// </summary>
+    /// <returns>The host ID as a string.</returns>
     public string GetHostId()
     {
         return _lobby.HostId;

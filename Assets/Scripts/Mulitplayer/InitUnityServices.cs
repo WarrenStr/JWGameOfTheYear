@@ -12,6 +12,7 @@ using UnityEngine.SceneManagement;
 /// </summary>
 public class InitUnityServices : MonoBehaviour
 {
+
     async void Start()
     {
         await UnityServices.InitializeAsync(); // Initialize SDK.

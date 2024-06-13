@@ -50,7 +50,7 @@ public class MainMenuController : MonoBehaviour
     private async void OnSubmitCodeClicked()
     {
         string code = _codeText.text;
-        code = code.Substring(0, code.Length - 1); //TextMeshPro adds a end of line character to the end of string that we need to remove
+        code = code.Substring(0, code.Length - 1); // TextMeshPro adds a end of line character to the end of string that we need to remove.
         Debug.Log(code);
 
         bool succeeded = await GameLobbyManager.Instance.JoinLobby(code);
