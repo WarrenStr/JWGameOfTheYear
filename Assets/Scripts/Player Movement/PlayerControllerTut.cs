@@ -53,6 +53,7 @@ public class PCTutorial : NetworkBehaviour
         if (IsServer && IsLocalPlayer)
         {
             Move(movementInput);
+            Rotate(lookInput);
             RotateCamera(lookInput);
         }
         else if (IsLocalPlayer) // DEFINES THE MOVEMENT OF A LOCAL INSTANCE ONLY. 
