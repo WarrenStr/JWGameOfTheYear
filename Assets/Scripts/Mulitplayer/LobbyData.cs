@@ -10,11 +10,13 @@ public class LobbyData
     private string _relayJoinCode;
     private string _sceneName;
 
+
     public int MapIndex
     {
         get => _mapIndex;
         set => _mapIndex = value;
     }
+
 
     public string RelayJoinCode
     {
@@ -22,27 +24,31 @@ public class LobbyData
         set => _relayJoinCode = value;
     }
 
+
     public string SceneName
     {
         get => _sceneName;
         set => _sceneName = value;
     }
 
+
     public void Initialize(int mapIndex)
     {
         _mapIndex = mapIndex;
     }
+
 
     public void Initialize(Dictionary<string, DataObject> lobbyData) 
     {
         UpdateState(lobbyData);
     }
 
+    
     public void UpdateState(Dictionary<string, DataObject> lobbyData)
     {
         if (lobbyData.ContainsKey("MapIndex"))
         {
-            _mapIndex = Int32.Parse(lobbyData["MapIndex"].Value);
+            _mapIndex = int.Parse(lobbyData["MapIndex"].Value);
         }
 
         if (lobbyData.ContainsKey("RelayJoinCode"))
@@ -52,9 +58,10 @@ public class LobbyData
 
         if(lobbyData.ContainsKey("SceneName"))
         {
-            _sceneName = lobbyData["SceneName"].Value;   
+            _sceneName = lobbyData["SceneName"].Value;
         }
     }
+
 
     public Dictionary<string, string> Serialize()
     {

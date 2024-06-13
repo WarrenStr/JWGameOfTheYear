@@ -10,7 +10,7 @@ public class LobbyPlayerData
     private string _gamerTag;
     private bool _isReady;
 
-    public string Id => _id; //Accessor Lamda Exression
+    public string Id => _id; // Accessor Lamda Expression.
     public string GamerTag => _gamerTag;
     
 
@@ -21,14 +21,14 @@ public class LobbyPlayerData
     }
 
 
-    public void Initialize(string id, string gamertag) //Initialize Host
+    public void Initialize(string id, string gamertag) // Initialize Host.
     {
         _id = id;
         _gamerTag = gamertag;
     }
 
 
-    public void Initialize(Dictionary<string, PlayerDataObject> playerData) //Initialize Client
+    public void Initialize(Dictionary<string, PlayerDataObject> playerData) // Initialize Client.
     {
         UpdateState(playerData);
     }
@@ -59,7 +59,7 @@ public class LobbyPlayerData
         {
             { "Id", _id},
             { "Gamertag", _gamerTag},
-            { "IsReady", _isReady.ToString()} //True or False
+            { "IsReady", _isReady.ToString()} // True or False.
         };
     }
 }

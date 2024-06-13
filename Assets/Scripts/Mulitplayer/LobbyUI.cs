@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LobbyUI : MonoBehaviour
 {
-    [SerializeField] private TextMeshProUGUI _lobbyUI;
+    [SerializeField] private TextMeshProUGUI _lobbyCodeText;
     [SerializeField] private Button _readyButton;
     [SerializeField] private Button _startButton;
     [SerializeField] private Image _mapImage;
@@ -16,7 +16,7 @@ public class LobbyUI : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _mapName;
     [SerializeField] private MapSelectionData _mapSelectionData;
 
-    private int _currentMapIndex = 0;
+    public int _currentMapIndex = 0;
 
 
     private void OnEnable()
@@ -48,15 +48,19 @@ public class LobbyUI : MonoBehaviour
         LobbyEvents1.OnLobbyReady -= OnLobbyReady;
     }
 
-    void Start()
-    {
-        _lobbyUI.text = $"Lobby Code: {GameLobbyManager.Instance.GetLobbyCode()}";
 
-        if(!GameLobbyManager.Instance.IsHost)
+    async void Start()
+    {
+        _lobbyCodeText.text = $"Lobby Code: {GameLobbyManager.Instance.GetLobbyCode()}";
+
+        if(!GameLobbyManager.Instance.IsHost) // Disable UI elements if you are not the host.
         {
             _leftButton.gameObject.SetActive(false);
             _rightButton.gameObject.SetActive(false);
-
+        }
+        else
+        {
+            await GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
         }
     }
 
@@ -69,11 +73,11 @@ public class LobbyUI : MonoBehaviour
         }
         else
         {
-            _currentMapIndex = _mapSelectionData.Maps.Count - 1; //Make it so it wraps around 
+            _currentMapIndex = _mapSelectionData.Maps.Count - 1; // Make it so it wraps around.
         }
 
         UpdateMap();
-        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
+        await GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
     }
 
 
@@ -89,7 +93,7 @@ public class LobbyUI : MonoBehaviour
         }
 
         UpdateMap();
-        GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
+        await GameLobbyManager.Instance.SetSelectedMap(_currentMapIndex, _mapSelectionData.Maps[_currentMapIndex].SceneName);
     }
 
 
@@ -109,6 +113,7 @@ public class LobbyUI : MonoBehaviour
         _mapImage.sprite = _mapSelectionData.Maps[_currentMapIndex].MapThumbnail;
         _mapName.text = _mapSelectionData.Maps[_currentMapIndex].MapName;
     }
+
 
     private void OnLobbyUpdated()
     {
