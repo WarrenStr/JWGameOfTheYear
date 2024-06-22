@@ -13,6 +13,8 @@ public class PlayerControllerTutorial : NetworkBehaviour
     [SerializeField] private Vector2 _minMaxRotationX;
     [SerializeField] private Transform _camTransform;
     [SerializeField] private NetworkMovementComponent _playerMovement;
+    [SerializeField] private float _interactDistance;
+    [SerializeField] private LayerMask _interactionLayer;
 
     private CharacterController _cc;
     private PlayerControl _playerControl;
@@ -60,6 +62,29 @@ public class PlayerControllerTutorial : NetworkBehaviour
         else  // DEFINES THE MOVEMENT OF A LOCAL INSTANCE ONLY. 
         {
             _playerMovement.ProcessSimulatedPlayerMovement();
+        }
+
+        if (IsLocalPlayer && _playerControl.Player.Interact.inProgress)
+        {
+            if (Physics.Raycast(origin: _camTransform.position, direction: _camTransform.forward, out RaycastHit hit, _interactDistance, _interactionLayer))
+            {
+                if (hit.collider.TryGetComponent<ButtonDoor>(out ButtonDoor buttonDoor))
+                {
+                    UseButtonServerRpc();
+                }
+            }
+        }
+    }
+
+    [ServerRpc]
+    private void UseButtonServerRpc()
+    {
+        if (Physics.Raycast(origin: _camTransform.position, direction: _camTransform.forward, out RaycastHit hit, _interactDistance, _interactionLayer))
+        {
+            if (hit.collider.TryGetComponent<ButtonDoor>(out ButtonDoor buttonDoor))
+            {
+                buttonDoor.Activate();
+            }
         }
     }
 }
