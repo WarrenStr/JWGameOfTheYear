@@ -25,11 +25,12 @@ public class RbPlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Look();
     }
 
     private void LateUpdate()
     {
-        Look();
+        
     }
 
     // Input References
