@@ -17,22 +17,30 @@ public class EnemyController : MonoBehaviour
     public float randomPointRadius = 10;
     private Vector3 randomDestination;
     private bool isMovingToRandomDestination = false;
-    public float destinationReachedThreshold = 1.0f; 
+    public float destinationReachedThreshold = 1.0f;
+
+    // Variables for force threshold and freeze duration
+    public float forceThreshold = 10f;
+    public float freezeDuration = 3f;
+
+    // Variables to keep track of the enemy's state
+    private bool isFrozen = false;
+    private Rigidbody enemyRigidbody;
 
     private void Awake()
     {
-        player = GameObject.Find("Player").transform;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
         enemyTransform = GetComponent<Transform>();
         enemyAgent = GetComponent<NavMeshAgent>();
     }
     // Start is called before the first frame update
     void Start()
     {
-        
+        enemyRigidbody = GetComponent<Rigidbody>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         EnemyMovement();
     }
@@ -73,5 +81,39 @@ public class EnemyController : MonoBehaviour
         enemyAgent.SetDestination(randomDestination);
 
         
+    }
+
+    void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Object"))
+        {
+            // Calculate the force of the collision
+            float collisionForce = collision.relativeVelocity.magnitude * collision.rigidbody.mass;
+
+            // Check if the collision force exceeds the threshold
+            if (collisionForce >= forceThreshold)
+            {
+                // Start the freeze coroutine
+                StartCoroutine(FreezeEnemy());
+            }
+        }
+    }
+
+    // Coroutine to freeze the enemy
+    IEnumerator FreezeEnemy()
+    {
+        if (!isFrozen)
+        {
+            isFrozen = true;
+            // Disable the enemy's rigidbody physics
+            enemyRigidbody.isKinematic = true;
+
+            // Wait for the freeze duration
+            yield return new WaitForSeconds(freezeDuration);
+
+            // Re-enable the enemy's rigidbody physics
+            enemyRigidbody.isKinematic = false;
+            isFrozen = false;
+        }
     }
 }

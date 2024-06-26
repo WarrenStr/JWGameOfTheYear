@@ -80,7 +80,7 @@ GameObject:
   - component: {fileID: 4384372066130087125}
   m_Layer: 0
   m_Name: Camera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -173,6 +173,7 @@ GameObject:
   - component: {fileID: 6671512431106089628}
   - component: {fileID: 7127478710137901132}
   - component: {fileID: 5098861572427737939}
+  - component: {fileID: 4578694977051997628}
   - component: {fileID: 7067598890339529728}
   m_Layer: 0
   m_Name: PlayerRB
@@ -196,6 +197,7 @@ Transform:
   m_Children:
   - {fileID: 7090831328824809534}
   - {fileID: 800231466941720853}
+  - {fileID: 7313018970839978944}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &8653298077147606310
@@ -315,8 +317,26 @@ MonoBehaviour:
   speed: 4
   sensitivity: 0.1
   maxForce: 1
-  jumpForce: 3
+  jumpForce: 2.5
   isGrounded: 0
+--- !u!114 &4578694977051997628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5257451734948798442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 670c70e0be279af4583cf2018a1c4a61, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  grabRange: 3
+  grabLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  holdPosition: {fileID: 7313018970839978944}
+  releaseForce: 10
 --- !u!114 &7067598890339529728
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -406,11 +426,58 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: dac65db7-f321-4fe2-a31e-2b02e7c1ec68
     m_ActionName: PlayerDefaultMap/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 4578694977051997628}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 95204704-da18-419f-bbc3-d403da3dc383
+    m_ActionName: PlayerDefaultMap/Grab[/Keyboard/e]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: PlayerDefaultMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 4651675646226201128}
+--- !u!1 &6621187060561290666
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7313018970839978944}
+  m_Layer: 0
+  m_Name: HoldPosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7313018970839978944
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6621187060561290666}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.377, y: 0, z: 0.602}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5337303739333756245}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7633353712685304799
 GameObject:
   m_ObjectHideFlags: 0
