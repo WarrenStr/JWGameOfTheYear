@@ -9,6 +9,7 @@ public class EnemyController : MonoBehaviour
     private Transform player;
     private Transform enemyTransform;
     private NavMeshAgent enemyAgent;
+    private float speedRef;
 
     public float ignoreRange = 0;
     public float detectRange = 10;
@@ -32,6 +33,7 @@ public class EnemyController : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player").transform;
         enemyTransform = GetComponent<Transform>();
         enemyAgent = GetComponent<NavMeshAgent>();
+        speedRef = enemyAgent.speed;
     }
     // Start is called before the first frame update
     void Start()
@@ -106,13 +108,13 @@ public class EnemyController : MonoBehaviour
         {
             isFrozen = true;
             // Disable the enemy's rigidbody physics
-            enemyRigidbody.isKinematic = true;
+            enemyAgent.speed = 0f;
 
             // Wait for the freeze duration
             yield return new WaitForSeconds(freezeDuration);
 
             // Re-enable the enemy's rigidbody physics
-            enemyRigidbody.isKinematic = false;
+            enemyAgent.speed = speedRef;
             isFrozen = false;
         }
     }
