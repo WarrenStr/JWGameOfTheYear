@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7957466476455394099}
   - component: {fileID: 8910327788073582969}
   - component: {fileID: 744203055917394086}
+  - component: {fileID: 392916549895517494}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -106,7 +107,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.5
+  m_Radius: 0.25
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8910327788073582969
 MonoBehaviour:
@@ -123,8 +124,10 @@ MonoBehaviour:
   ignoreRange: 0
   detectRange: 5
   rotationSpeed: 30
-  randomPointRadius: 10
+  randomPointRadius: 30
   destinationReachedThreshold: 1
+  forceThreshold: 2
+  freezeDuration: 3
 --- !u!195 &744203055917394086
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -135,7 +138,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 1
+  m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -147,6 +150,33 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!54 &392916549895517494
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2197181743274319121}
+  serializedVersion: 4
+  m_Mass: 10
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 1
+  m_IsKinematic: 0
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1 &4749863145944798928
 GameObject:
   m_ObjectHideFlags: 0
