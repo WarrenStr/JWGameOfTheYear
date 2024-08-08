@@ -145,12 +145,10 @@ GameObject:
   m_Component:
   - component: {fileID: 7854110710432172114}
   - component: {fileID: 6809283118123205430}
-  - component: {fileID: 2442132095191849541}
   - component: {fileID: 4130002171700807416}
   - component: {fileID: 7864486557187265672}
   - component: {fileID: 2391323644151731380}
   - component: {fileID: 1145465607953434758}
-  - component: {fileID: 8529194982127219735}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -205,27 +203,6 @@ MonoBehaviour:
   m_DefaultActionMap: PlayerDefaultMap
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
---- !u!95 &2442132095191849541
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568238891462858111}
-  m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
-  m_Controller: {fileID: 9100000, guid: a83a8a28a00d896498bbd160b354841d, type: 2}
-  m_CullingMode: 1
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 1
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!143 &4130002171700807416
 CharacterController:
   m_ObjectHideFlags: 0
@@ -298,27 +275,6 @@ MonoBehaviour:
   mouseSensitivity: 25
   cameraTransform: {fileID: 3986616112900774319}
   playerTransform: {fileID: 7854110710432172114}
---- !u!114 &8529194982127219735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7568238891462858111}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlobalObjectIdHash: 0
-  InScenePlacedSourceGlobalObjectIdHash: 0
-  AlwaysReplicateAsRoot: 0
-  SynchronizeTransform: 1
-  ActiveSceneSynchronization: 0
-  SceneMigrationSynchronization: 1
-  SpawnWithObservers: 1
-  DontDestroyWithOwner: 0
-  AutoObjectParentSync: 1
 --- !u!1001 &7358721541603404087
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -383,7 +339,8 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: a83a8a28a00d896498bbd160b354841d, type: 2}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5866666021909216657, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
