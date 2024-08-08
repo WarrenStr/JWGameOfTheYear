@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8910327788073582969}
   - component: {fileID: 744203055917394086}
   - component: {fileID: 392916549895517494}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -189,7 +189,7 @@ GameObject:
   - component: {fileID: 3858163288062121894}
   - component: {fileID: 4539321179545078402}
   - component: {fileID: 2180160506950439015}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Eye
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,7 +295,7 @@ GameObject:
   - component: {fileID: 7071153184087191869}
   - component: {fileID: 5398393720408642522}
   - component: {fileID: 8261698780935052916}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Retna
   m_TagString: Untagged
   m_Icon: {fileID: 0}
