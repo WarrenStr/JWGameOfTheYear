@@ -5,7 +5,12 @@ using UnityEngine;
 
 public abstract class NpcBaseState
 {
-    public NpcStateMachine npcSM;
+    protected NpcStateMachine npcSM;
+
+    public NpcBaseState(NpcStateMachine npcSM)
+    {
+        this.npcSM = npcSM;
+    }
 
     public abstract void EnterState(NpcStateMachine npcSM);
     public abstract void UpdatePhysics(NpcStateMachine npcSM);
