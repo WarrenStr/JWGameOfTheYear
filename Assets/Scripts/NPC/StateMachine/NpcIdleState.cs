@@ -3,23 +3,24 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TMPro;
-using Unity.Mathematics;
 using UnityEngine;
 
 // To switch states call npcSM.SwitchState(npcSM.STATENAME)
 
 public class NpcIdleState : NpcBaseState
 {
-    //NpcStateMachine npcSM;
+    public NpcIdleState(NpcStateMachine npcSM) : base(npcSM)
+    {
+
+    }
+
 
     public override void EnterState(NpcStateMachine npcSM)
     {
-        this.npcSM = npcSM;
         UpdateStateUI();
-        Animator animator = npcSM.GetComponent<Animator>();
-        animator.Play("Base Layer.Idle Relaxed");
 
-        npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected; 
+
+      //  npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected; 
         
         StartTimer();
     }
@@ -46,13 +47,13 @@ public class NpcIdleState : NpcBaseState
     public override void UpdateStateUI()
     {
         string rawStateName = this.GetType().Name;
-        npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
+     //   npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
     }
 
 
     public override void ExitState(NpcStateMachine npcSM)
     {
-        npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
+       // npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
     }
 
 

@@ -5,13 +5,18 @@ using UnityEngine;
 
 public class NpcStateMachine : MonoBehaviour
 {
-    public TextMeshProUGUI stateText;
-    public SimpleNpcFov simpleNpcFov;
+    //public TextMeshProUGUI stateText;
+    //public SimpleNpcFov simpleNpcFov;
 
     NpcBaseState currentState;
-    public NpcIdleState IdleState = new NpcIdleState();
-    public NpcPatrolState PatrolState = new NpcPatrolState();
+    public NpcIdleState IdleState;
+    public NpcPatrolState PatrolState;
 
+    private void Awake()
+    {
+        IdleState = new NpcIdleState(this);
+        PatrolState = new NpcPatrolState(this);
+    }
 
     private void Start()
     {

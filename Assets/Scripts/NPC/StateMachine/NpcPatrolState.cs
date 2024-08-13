@@ -4,16 +4,17 @@ using UnityEngine;
 
 public class NpcPatrolState : NpcBaseState
 {
-    //NpcStateMachine npcSM;
+    public NpcPatrolState(NpcStateMachine npcSM) : base(npcSM)
+    {
+
+    }
 
     public override void EnterState(NpcStateMachine npcSM)
     {
-        this.npcSM = npcSM;
-        UpdateStateUI();
-        Animator animator = npcSM.GetComponent<Animator>();
-        animator.Play("Base Layer.Look Over Shoulder");
 
-        npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected;
+        UpdateStateUI();
+
+        //npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected;
         
         StartTimer();
     }
@@ -40,13 +41,13 @@ public class NpcPatrolState : NpcBaseState
     public override void UpdateStateUI()
     {
         string rawStateName = this.GetType().Name;
-        npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
+       // npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
     }
 
 
     public override void ExitState(NpcStateMachine npcSM)
     {
-        npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
+       // npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
     }
 
 
