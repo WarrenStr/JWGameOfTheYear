@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class NpcStateMachine : MonoBehaviour
 {
-    //public TextMeshProUGUI stateText;
-    //public SimpleNpcFov simpleNpcFov;
+    public TextMeshProUGUI stateText;
+
 
     NpcBaseState currentState;
     public NpcIdleState IdleState;

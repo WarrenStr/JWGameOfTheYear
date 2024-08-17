@@ -1,7 +1,5 @@
 // "Unity line of sight checking using sensors [AI #08]" https://www.youtube.com/watch?v=znZXmmyBF-o
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -193,24 +191,29 @@ public class AiDetection : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //Color color = meshColor;
+        //color.a = 0.01f;
+
         if (mesh)
         {
-            Gizmos.color = meshColor; // Draw wedge.
-            Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
+            Gizmos.color = meshColor; 
+            Gizmos.DrawMesh(mesh, transform.position, transform.rotation); // Draw wedge.
         }
-
+        
         Gizmos.DrawWireSphere(transform.position, distance); //Draw wire sphere.
         for (int i = 0; i < count; ++i)
         {
+            Gizmos.color = new Color(1, 0, 0, 0.4f);
             Gizmos.DrawSphere(colliders[i].transform.position, 0.4f); // Draw sphere around object within wire sphere detection radius.
         }
 
-        Gizmos.color = Color.green;
+        Gizmos.color = new Color(0, 1, 0, 0.4f);
         foreach (var obj in objects)
         {
             Gizmos.DrawSphere(obj.transform.position, 0.4f); // Draw sphere around object within view wedge.
         }
     }
+
 
     public int Filter(GameObject[] buffer, string layerName) // Returns the number of objects in a specified layer inside the objects list.
     {

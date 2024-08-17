@@ -11,11 +11,7 @@ public class NpcPatrolState : NpcBaseState
 
     public override void EnterState(NpcStateMachine npcSM)
     {
-
         UpdateStateUI();
-
-        //npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected;
-        
         StartTimer();
     }
 
@@ -41,13 +37,13 @@ public class NpcPatrolState : NpcBaseState
     public override void UpdateStateUI()
     {
         string rawStateName = this.GetType().Name;
-       // npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
+        npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
     }
 
 
     public override void ExitState(NpcStateMachine npcSM)
     {
-       // npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
+
     }
 
 
