@@ -1,7 +1,5 @@
 // "Unity line of sight checking using sensors [AI #08]" https://www.youtube.com/watch?v=znZXmmyBF-o
 
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -14,14 +12,23 @@ public class AiDetection : MonoBehaviour
     public Color meshColor = Color.red;
     public int scanFrequency = 30;
     public LayerMask layerMask;
-    public LayerMask occlusionLayers;
-    public List<GameObject> objects = new List<GameObject>();
+    public LayerMask occlusionLayers; 
+    
+    public List<GameObject> Objects
+    {
+        get 
+        { 
+            objects.RemoveAll(obj => !obj);
+            return objects;
+        }
+    }
+    private List<GameObject> objects = new List<GameObject>();
 
-    Collider[] colliders = new Collider[50];
-    Mesh mesh;
-    int count;
-    float scanInterval;
-    float scanTimer;
+    private Collider[] colliders = new Collider[50];
+    private Mesh mesh;
+    private int count;
+    private float scanInterval;
+    private float scanTimer;
 
 
     private void Start()
@@ -63,12 +70,12 @@ public class AiDetection : MonoBehaviour
         Vector3 dest = obj.transform.position;
         Vector3 direction = dest - origin;
 
-        if (direction.y < 0 || direction.y > height) // Check to see if objects are with the vertical bound of the detection view
+        if (direction.y < 0 || direction.y > height) // Check to see if objects are with the vertical bound of the detection view.
         {
             return false;
         }
 
-        direction.y = 0; // Cancel out the vertical aspect of the calculation
+        direction.y = 0; // Cancel out the vertical aspect of the calculation.
 
         float deltaAngle = Vector3.Angle(direction, transform.forward);
         if (deltaAngle > angle)
@@ -76,7 +83,7 @@ public class AiDetection : MonoBehaviour
             return false;
         }
 
-        origin.y += height / 2; // Set origin to center of the wedge
+        origin.y += height / 2; // Set origin to center of the wedge.
         dest.y = origin.y;
 
         if (Physics.Linecast(origin, dest, occlusionLayers))
@@ -97,7 +104,7 @@ public class AiDetection : MonoBehaviour
         int numVertices = numTriangles * 3;
 
         Vector3[] vertices = new Vector3[numVertices];
-        int[] triangles = new int[numVertices]; // Ignoring indexing here
+        int[] triangles = new int[numVertices]; // Ignoring indexing here.
 
         // Define the location of each point
         Vector3 bottomCenter = Vector3.zero;
@@ -110,7 +117,7 @@ public class AiDetection : MonoBehaviour
 
         int vert = 0;
 
-        // Add vertices to array in order to be later drawn into triagles
+        // Add vertices to array in order to be later drawn into triagles.
 
         // Left side
         vertices[vert++] = bottomCenter;
@@ -131,8 +138,8 @@ public class AiDetection : MonoBehaviour
         vertices[vert++] = bottomCenter;
 
         float currentAngle = -angle;
-        float deltAngle = (angle * 2) / segments; // What angle each segment will be
-        for (int i = 0; i < segments; ++i) // Loop from left to right dividing the total angle of the wedge by the amounnt of segments needed
+        float deltAngle = (angle * 2) / segments; // What angle each segment will be.
+        for (int i = 0; i < segments; ++i) // Loop from left to right dividing the total angle of the wedge by the amounnt of segments needed.
         {            
             bottomLeft = Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * distance;
             bottomRight = Quaternion.Euler(0, currentAngle + deltAngle, 0) * Vector3.forward * distance;
@@ -162,7 +169,7 @@ public class AiDetection : MonoBehaviour
             currentAngle += deltAngle;
         }
 
-        for (int i = 0; i < numVertices; i++) // Loop over the vertices
+        for (int i = 0; i < numVertices; i++) // Loop over the vertices.
         {
             triangles[i] = i;
         }
@@ -184,22 +191,47 @@ public class AiDetection : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        //Color color = meshColor;
+        //color.a = 0.01f;
+
         if (mesh)
         {
-            Gizmos.color = meshColor; // Draw wedge
-            Gizmos.DrawMesh(mesh, transform.position, transform.rotation);
+            Gizmos.color = meshColor; 
+            Gizmos.DrawMesh(mesh, transform.position, transform.rotation); // Draw wedge.
         }
-
-        Gizmos.DrawWireSphere(transform.position, distance); //Draw wire sphere
+        
+        Gizmos.DrawWireSphere(transform.position, distance); //Draw wire sphere.
         for (int i = 0; i < count; ++i)
         {
+            Gizmos.color = new Color(1, 0, 0, 0.4f);
             Gizmos.DrawSphere(colliders[i].transform.position, 0.4f); // Draw sphere around object within wire sphere detection radius.
         }
 
-        Gizmos.color = Color.green;
+        Gizmos.color = new Color(0, 1, 0, 0.4f);
         foreach (var obj in objects)
         {
-            Gizmos.DrawSphere(obj.transform.position, 0.4f); // Draw sphere around object within view wedge
+            Gizmos.DrawSphere(obj.transform.position, 0.4f); // Draw sphere around object within view wedge.
         }
+    }
+
+
+    public int Filter(GameObject[] buffer, string layerName) // Returns the number of objects in a specified layer inside the objects list.
+    {
+        int layer = LayerMask.NameToLayer (layerName);
+        int count = 0;
+        foreach (var obj in Objects)
+        {
+            if (obj.layer == layer)
+            {
+                buffer[count++] = obj;
+            }
+
+            if (buffer.Length == count)
+            {
+                break; // Buffer is full.
+            }
+        }
+
+        return count;
     }
 }
