@@ -47,7 +47,7 @@ public class NpcIdleState : NpcBaseState
     public override void UpdateStateUI()
     {
         string rawStateName = this.GetType().Name;
-     //   npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
+        npcSM.stateText.text = rawStateName.Replace("Npc", "").Replace("State", "");
     }
 
 
