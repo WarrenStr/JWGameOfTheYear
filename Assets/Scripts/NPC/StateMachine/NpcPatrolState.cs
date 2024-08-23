@@ -43,7 +43,7 @@ public class NpcPatrolState : NpcBaseState
 
     public override void ExitState(NpcStateMachine npcSM)
     {
-
+ 
     }
 
 

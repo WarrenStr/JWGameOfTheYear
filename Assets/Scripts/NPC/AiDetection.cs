@@ -207,7 +207,7 @@ public class AiDetection : MonoBehaviour
             Gizmos.DrawSphere(colliders[i].transform.position, 0.4f); // Draw sphere around object within wire sphere detection radius.
         }
 
-        Gizmos.color = new Color(0, 1, 0, 0.4f);
+        Gizmos.color = new Color(0,1 , 0, 0.6f);
         foreach (var obj in objects)
         {
             Gizmos.DrawSphere(obj.transform.position, 0.4f); // Draw sphere around object within view wedge.

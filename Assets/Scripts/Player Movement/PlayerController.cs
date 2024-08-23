@@ -6,7 +6,6 @@ public class PlayerController : MonoBehaviour
 {
     private CharacterController _charController;
     private DefaultPlayerInput _input;
-
     private Animator _animator;
 
     public bool RunningPressed;
@@ -15,11 +14,15 @@ public class PlayerController : MonoBehaviour
     public float runSpeed = 4f;
     public float walkSpeed = 1.42f;
 
+    private void Start()
+    {
+
+    }
+
     public void Awake()
     {
         _charController = GetComponent<CharacterController>();
         _input = GetComponent<DefaultPlayerInput>();
-
         _animator = GetComponent<Animator>();
     }
 
@@ -59,8 +62,5 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void Start()
-    {
 
-    }
 }

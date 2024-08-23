@@ -1,3 +1,5 @@
+// How to Program in Unity: State Machines Explained https://www.youtube.com/watch?v=Vt8aZDPzRjI
+
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -7,47 +9,48 @@ public class NpcStateMachine : MonoBehaviour
 {
     public TextMeshProUGUI stateText;
 
+    private NpcBaseState _currentState;
 
-    NpcBaseState currentState;
+    public NpcDefaultState DefaulState;
     public NpcIdleState IdleState;
     public NpcPatrolState PatrolState;
 
-    private void Awake()
+    private void Awake() 
     {
+        DefaulState = new NpcDefaultState(this); // Create instances of states.
         IdleState = new NpcIdleState(this);
         PatrolState = new NpcPatrolState(this);
     }
 
-    private void Start()
+private void Start()
     {
-        currentState = IdleState;
-
-        currentState.EnterState(this);
+        _currentState = IdleState;
+        _currentState.EnterState(this);
     }
 
 
     private void FixedUpdate() 
-    { 
-        currentState.UpdatePhysics(this); 
+    {
+        _currentState.UpdatePhysics(this); 
     }
 
 
     private void Update() 
-    { 
-        currentState.UpdateLogic(this); 
+    {
+        _currentState.UpdateLogic(this); 
     }
 
 
     private void LateUpdate() 
-    { 
-        currentState.UpdateLate(this);
+    {
+        _currentState.UpdateLate(this);
     }
 
 
     public void SwitchState(NpcBaseState newState)
     {
-        currentState.ExitState(this);
-        currentState = newState;
+        _currentState.ExitState(this);
+        _currentState = newState;
         newState.EnterState(this);
     }
 }

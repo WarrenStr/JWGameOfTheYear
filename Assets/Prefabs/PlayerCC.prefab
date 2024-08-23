@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 5872514715775346532}
   - component: {fileID: 6316425791694597855}
   m_Layer: 0
-  m_Name: PlayerCamera
+  m_Name: Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144,13 +144,14 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7854110710432172114}
+  - component: {fileID: 1229375419444446535}
   - component: {fileID: 6809283118123205430}
   - component: {fileID: 4130002171700807416}
   - component: {fileID: 7864486557187265672}
   - component: {fileID: 2391323644151731380}
   - component: {fileID: 1145465607953434758}
-  m_Layer: 0
-  m_Name: Player
+  m_Layer: 7
+  m_Name: PlayerCC
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -173,6 +174,27 @@ Transform:
   - {fileID: 7031763048036847324}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!95 &1229375419444446535
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7568238891462858111}
+  m_Enabled: 1
+  m_Avatar: {fileID: 9000000, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
+  m_Controller: {fileID: 9100000, guid: a83a8a28a00d896498bbd160b354841d, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!114 &6809283118123205430
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -223,7 +245,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.4
+  m_Radius: 0.25
   m_SlopeLimit: 90
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -243,7 +265,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunningPressed: 0
   runSpeed: 6
-  walkSpeed: 2
+  walkSpeed: 4
 --- !u!114 &2391323644151731380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,8 +347,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
       propertyPath: m_Name
-      value: DemoCharacter
+      value: Character Model
       objectReference: {fileID: 0}
+    - target: {fileID: 5822821947120931875, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 270eacac639852945af9284dfa12b5c4, type: 2}
     - target: {fileID: 5866666021909216657, guid: 652a5e73986b9ac4a84d0435b48c391b, type: 3}
       propertyPath: m_Avatar
       value: 

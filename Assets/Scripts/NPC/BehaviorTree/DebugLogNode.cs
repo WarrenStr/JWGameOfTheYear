@@ -1,25 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// Logs a custom debug message to Unity's console
+/// </summary>
 public class DebugLogNode : ActionNode
 {
     public string message;
 
-    #region Overrides of Node
+    protected override void OnStart()
+    {
+        //Debug.Log("DebugLogNode started");
+    }
 
-    /// <inheritdoc />
-    protected override void OnStart() => Debug.Log($"OnStart: {message}");
+    protected override void OnStop()
+    {
+        //Debug.Log("DebugLogNode stopped");
+    }
 
-    /// <inheritdoc />
-    protected override void OnStop() => Debug.Log($"OnStop: {message}");
-
-    /// <inheritdoc />
     protected override State OnUpdate()
     {
         Debug.Log($"OnUpdate: {message}");
         return State.Success;
     }
-
-    #endregion
 }

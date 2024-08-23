@@ -18,11 +18,8 @@ public class NpcIdleState : NpcBaseState
     public override void EnterState(NpcStateMachine npcSM)
     {
         UpdateStateUI();
-
-
-      //  npcSM.simpleNpcFov.OnDetected += SimpleNpcFov_OnDetected; 
         
-        StartTimer();
+        //StartTimer();
     }
 
 
@@ -53,24 +50,24 @@ public class NpcIdleState : NpcBaseState
 
     public override void ExitState(NpcStateMachine npcSM)
     {
-       // npcSM.simpleNpcFov.OnDetected -= SimpleNpcFov_OnDetected;
+
     }
 
 
-    private void SimpleNpcFov_OnDetected(object sender, SimpleNpcFov.OnDetectedEventArgs e)
-    {
-        Debug.Log(e.target.name + "Event System Ran");
-    }
+    //private void SimpleNpcFov_OnDetected(object sender, SimpleNpcFov.OnDetectedEventArgs e)
+    //{
+    //    Debug.Log(e.target.name + "Event System Ran");
+    //}
 
 
-    private async void StartTimer()
-    {
-        await TimerSystem.StartTimer(15.0f, ExecuteAfterWait);
-    }
+    //private async void StartTimer()
+    //{
+    //    await TimerSystem.StartTimer(15.0f, ExecuteAfterWait);
+    //}
 
 
-    private void ExecuteAfterWait()
-    {
-        npcSM.SwitchState(npcSM.PatrolState);
-    }
+    //private void ExecuteAfterWait()
+    //{
+    //    npcSM.SwitchState(npcSM.PatrolState);
+    //}
 }
